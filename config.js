@@ -1,3 +1,3 @@
 module.exports = {
-  TOKEN: "2e1b38fc72701105b51711958a0ca34e"
+  APIkey: "d89eca60ac67077426e65fa0c94e4c83"
 };
