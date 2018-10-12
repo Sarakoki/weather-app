@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
+var mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/Weather");
 
-const db = mongoose.connection;
+var db = mongoose.connection;
 
 db.on("error", function() {
   console.log("mongoose connection error");
@@ -13,29 +13,30 @@ db.once("open", function() {
 
 const WeatherSchema = mongoose.Schema({
   CityName: { type: String, unique: true },
-  weather: String,
+  Weather: String,
   Temperature: Number
 });
 
-const Weather = mongoose.model("Weather", WeatherSchema);
+var Weather = mongoose.model("Weather", WeatherSchema);
 
-const saveWeather = function(data) {
+var saveWeather = function(data) {
   if (!data.name) {
     return console.log("no data");
   }
   obj = {
     CityName: data.name,
-    weather: data.weather[0].description,
+    Weather: data.weather[0].description,
     Temperature: data.main.temp
   };
-  const weather = new Weather(obj);
+
+  var weather = new Weather(obj);
   weather.save(function(err, data) {
     if (err) {
-      return console.log("error");
+      return console.log(err);
     }
     console.log("database saved");
   });
 };
 
-module.exports.saveWeather = saveWeather;
 module.exports.Weather = Weather;
+module.exports.saveWeather = saveWeather;

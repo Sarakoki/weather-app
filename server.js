@@ -1,40 +1,20 @@
-const express = require("express");
-const request = require("request");
-const db = require("./database/database.js");
-const config = require("./config.js");
-const bodyParser = require("body-parser");
-const port = 3001;
-const app = express();
-
+var express = require("express");
+var request = require("request");
+var db = require("./database/database.js");
+var help = require("./help/help.js");
+var config = require("./config.js");
+var bodyParser = require("body-parser");
+var port = 3001;
+var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// app.use(express.static(__dirname + "/client"));
+app.use(express.static(__dirname + "/client"));
 app.use(express.static(__dirname + "/node_modules"));
-
-//helper function
-let getWeatherByCityname = (cityName, callback) => {
-  let options = {
-    url:
-      "http://api.openweathermap.org/data/2.5/weather?q=" +
-      cityName +
-      "&appid=7f2df14e0a531ed8ee69b8f42c2b73dc",
-    headers: {
-      "User-Agent": "request",
-      Authorization: `apikey ${config.APIkey}`
-    }
-  };
-  request(options, function(error, response, body) {
-    console.log("error:", error);
-    console.log("statusCode:", response && response.statusCode);
-    var info = JSON.parse(body);
-    callback(error, info);
-  });
-};
 
 //routes
 app.post("/data", function(req, res) {
-  getWeatherByCityName(req.body.name, function(err, data) {
+  help.getWeatherByCityName(req.body.name, function(err, data) {
     db.saveWeather(data);
   });
   res.send(req.body);
@@ -46,8 +26,17 @@ app.get("/data", function(req, res) {
   });
 });
 
+app.post("/drop", function() {
+  db.Weather.remove({}, function(err, data) {
+    if (err) {
+      throw err;
+    }
+    console.log("done");
+  });
+});
+
 app.get("/", (req, res) => {
-  res.send("listening on PORT 3001");
+  res.send("/index.html");
 });
 
 app.listen(port, function() {

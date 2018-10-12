@@ -1,0 +1,19 @@
+<div><br>
+  <div class="container-fluied" Cities="$ctrl.Cities"></div>
+  <br>
+  <h1 style="font-size: 50px ; color: rgb(33, 75, 52)">Know the Weather Status</h1><br><br>
+  <h3 style="color: rgb(33, 75, 52)">Enter the name of the city</h3>
+  <br><br>
+  <input id="
+    txt" type="text" style="height:70px;width:600px;font-size: 45px; color: rgb(43, 92, 184)" class="form-control form-control-lg"
+    placeholder="City Name" ng-model="name"><br><br><br>
+  <input style="height:90px;width:200px;font-size: 60px" type="submit" value="Submit" ng-click='$ctrl.ShowWeather(name)'>
+  <div><br>
+    <button style="height:90px;width:200px;font-size: 60px;" class="btn btn-danger" ng-click="$ctrl.clear()">Clear</button><br><br>
+    <h4 ng-repeat="City in Cities | limitTo : 4" style="font-family: Do Hyeon; color: rgb(34, 41, 41); font-size: 30px">
+      {{City.CityName}},
+      Weather: {{City.Weather}},
+      Temperature: {{City.Temperature}} K</h4>
+  </div>
+</div>
+</div>
